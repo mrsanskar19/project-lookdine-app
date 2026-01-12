@@ -3,8 +3,6 @@
   
   packages = [ 
     pkgs.nodejs_20 
-    pkgs.jdk17
-    pkgs.nodePackages.expo-cli
   ];
 
   env = { };
@@ -16,27 +14,13 @@
       "bradlc.vscode-tailwindcss"
     ];
 
-    workspace = {
-      onCreate = {
-        install = "npm install";
-      };
-      onStart = {
-        android = ''
-          adb wait-for-device
-          npm run android -- --tunnel
-        '';
-      };
-    };
+    workspace = {};
 
     previews = {
       enable = true;
       previews = {
         web = {
           command = [ "npm" "run" "web" "--" "--port" "$PORT" ];
-          manager = "web";
-        };
-        android = {
-          command = [ "tail" "-f" "/dev/null" ];
           manager = "web";
         };
       };
