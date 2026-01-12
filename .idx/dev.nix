@@ -6,11 +6,13 @@
   # Use https://search.nixos.org/packages to find packages
   packages = [ pkgs.nodejs_20 ];
   # Sets environment variables in the workspace
-  env = { EXPO_USE_FAST_RESOLVER = 1; };
+  env = {  };
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
       "msjsdiag.vscode-react-native"
+      "echoapi.echoapi-for-vscode"
+      "bradlc.vscode-tailwindcss"
     ];
     workspace = {
       # Runs when a workspace is first created with this `dev.nix` file
