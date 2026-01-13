@@ -11,7 +11,7 @@ export default function LoginPage() {
 
   const handleLogin = () => {
     // Navigate to main app after successful auth
-    router.replace('/(main)/(tabs)');
+    router.replace('/(main)/(tabs)/home');
   };
 
   return (

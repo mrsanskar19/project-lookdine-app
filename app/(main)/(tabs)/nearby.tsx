@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, ActivityIndicator, TouchableOpacity, ScrollView, Image, SafeAreaView } from 'react-native';
 import * as Location from 'expo-location';
+import { Map as MapIcon, Grid, Star, MapPin, ChevronRight } from 'lucide-react-native';
 import MapLibreView from '@/components/MapLibreView';
+import ExploreView from '@/components/Explore';
 
 const CHECKPOINTS = [
   {
@@ -56,38 +58,72 @@ const CHECKPOINTS = [
 
 export default function NearbyScreen() {
   const [location, setLocation] = useState<[number, number] | null>(null);
+  const [viewMode, setViewMode] = useState<'map' | 'explore'>('explore');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
-      // 1. Request Permission
       let { status } = await Location.requestForegroundPermissionsAsync();
-      
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+        setErrorMsg('Permission denied');
         return;
       }
-
-      // 2. Get Current Position
       let userLocation = await Location.getCurrentPositionAsync({});
-      // MapLibre uses [Longitude, Latitude]
       setLocation([userLocation.coords.longitude, userLocation.coords.latitude]);
     })();
   }, []);
 
   return (
-    <View className="flex-1 bg-white">
-      {!location ? (
-        <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" color="#F97316" />
-          <Text className="mt-4 text-slate-500 font-medium">
-            {errorMsg ? errorMsg : "Locating you..."}
-          </Text>
+    <SafeAreaView className="flex-1 bg-background">
+      {/* --- HEADER --- */}
+      <View className="px-6 py-4 flex-row items-center justify-between border-b border-border/50">
+        <Text className="text-2xl font-black text-foreground capitalize">{viewMode}</Text>
+        
+        {/* --- TOGGLE TABS --- */}
+        <View className="flex-row bg-muted/50 p-1 rounded-2xl">
+          <TabButton 
+            active={viewMode === 'explore'} 
+            onPress={() => setViewMode('explore')} 
+            label="Explore" 
+            Icon={Grid} 
+          />
+          <TabButton 
+            active={viewMode === 'map'} 
+            onPress={() => setViewMode('map')} 
+            label="Map" 
+            Icon={MapIcon} 
+          />
         </View>
-      ) : (
-        // 3. Send current location to the Map
-        <MapLibreView checkpoints={CHECKPOINTS} current={[location?.[0],location?.[1]]} />
-      )}
-    </View>
+      </View>
+
+      <View className="flex-1">
+        {!location ? (
+          <View className="flex-1 justify-center items-center">
+            <ActivityIndicator size="large" color="#F97316" />
+            <Text className="mt-4 text-slate-500 font-medium">{errorMsg || "Locating..."}</Text>
+          </View>
+        ) : viewMode === 'map' ? (
+          <MapLibreView checkpoints={CHECKPOINTS} current={location} />
+        ) : (
+          <ExploreView items={CHECKPOINTS}/>
+        )}
+      </View>
+    </SafeAreaView>
+  );
+}
+
+// --- SUB-COMPONENTS ---
+
+function TabButton({ active, onPress, label, Icon }: any) {
+  return (
+    <TouchableOpacity 
+      onPress={onPress}
+      className={`flex-row items-center px-4 py-2 rounded-xl ${active ? 'bg-white shadow-sm' : ''}`}
+    >
+      <Icon size={16} color={active ? '#F97316' : '#94a3b8'} />
+      <Text className={`ml-2 font-bold text-xs ${active ? 'text-foreground' : 'text-muted-foreground'}`}>
+        {label}
+      </Text>
+    </TouchableOpacity>
   );
 }

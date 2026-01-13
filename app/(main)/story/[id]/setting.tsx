@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, SafeAreaView, Alert, Modal, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Clock, Trash2, Plus, ChevronLeft, ChevronRight, Eye } from 'lucide-react-native';
+import StoryDeleteAlert from '@/components/alert/StoryDelete';
+import StoryExtendAlert from '@/components/alert/StoryTime';
 
 export default function StorySettings() {
   const router = useRouter();
@@ -96,11 +98,9 @@ export default function StorySettings() {
         </View>
       </ScrollView>
 
-      <Modal visible={!!activeSlug} transparent animationType="slide">
-        <Pressable className="flex-1 bg-black/60 justify-end" onPress={() => setActiveSlug(null)}>
-          
-        </Pressable>
-      </Modal>
+      <StoryDeleteAlert isVisible={activeSlug === 'delete'} setIsVisible={setActiveSlug} />
+      <StoryExtendAlert isVisible={activeSlug === 'extend'} onClose={setActiveSlug} />
+
     </SafeAreaView>
   );
 }

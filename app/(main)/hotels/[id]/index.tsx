@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Star, MapPin, Clock, Phone, CalendarCheck, Info } from 'lucide-react-native';
 import HotelHeader from '@/components/hotel/HotelHeader';
@@ -9,7 +9,6 @@ export default function HotelDetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
 
-  // Mock Data (In a real app, fetch this using the ID)
   const hotel = {
     name: 'IIT Grand Hotel',
     location: 'Baramati MIDC, Maharashtra',
@@ -24,72 +23,76 @@ export default function HotelDetailScreen() {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-background">
       <ScrollView showsVerticalScrollIndicator={false}>
 
-        {/* 1. Header Image with Back Button */}
+        {/* 1. Header Component */}
         <HotelHeader hotel={hotel} />
 
         {/* 2. Content Section */}
-        <View className="p-6 -mt-8 bg-white rounded-t-[40px]">
+        <View className="p-6 -mt-10 bg-background rounded-t-[44px] shadow-2xl">
 
-          {/* 1. Header Info: Rating, Price, Distance, Time */}
-          <View className="flex-row items-center justify-between mb-6">
+          {/* Header Stats: Rating, Price, Distance */}
+          <View className="flex-row items-center justify-between mb-8">
             <View className="flex-row items-center space-x-4">
-              {/* Rating */}
-              <View className="flex-row items-center bg-orange-50 px-2 py-1 rounded-lg">
-                <Star size={16} color="#F97316" fill="#F97316" />
-                <Text className="ml-1 font-bold text-orange-600 text-base">{hotel.rating}</Text>
+              {/* Rating Badge */}
+              <View className="flex-row items-center bg-primary/10 px-3 py-1.5 rounded-xl border border-primary/20">
+                <Star size={16} className="text-primary fill-primary" />
+                <Text className="ml-1.5 font-black text-primary text-base">{hotel.rating}</Text>
               </View>
 
-              {/* Price Range */}
-              <Text className="text-slate-400 font-medium">$$ • Premium</Text>
+              <Text className="text-muted-foreground font-bold text-sm tracking-tight">$$ • PREMIUM</Text>
             </View>
 
-            {/* Distance & Time */}
             <View className="items-end">
               <View className="flex-row items-center">
-                <MapPin size={14} color="#64748b" />
-                <Text className="ml-1 text-slate-900 font-semibold">{hotel?.distance || '1.2'} km away</Text>
+                <MapPin size={14} className="text-muted-foreground" />
+                <Text className="ml-1 text-foreground font-black text-sm">{hotel?.distance} km</Text>
               </View>
               <View className="flex-row items-center mt-1">
-                <Clock size={14} color="#64748b" />
-                <Text className="ml-1 text-slate-500 text-xs">{hotel?.travelTime || '15'} mins drive</Text>
+                <Clock size={14} className="text-muted-foreground" />
+                <Text className="ml-1 text-muted-foreground text-[10px] font-bold uppercase tracking-tighter">
+                   {hotel?.travelTime} mins away
+                </Text>
               </View>
             </View>
           </View>
 
-          {/* 2. Action Buttons: Book Table & Call */}
-          <View className="flex-row space-x-4 mb-8">
+          {/* Main Actions */}
+          <View className="flex-row space-x-4 mb-10">
             <TouchableOpacity
-              className="flex-1 bg-orange-500 h-14 rounded-2xl flex-row items-center justify-center shadow-lg shadow-orange-300"
-              onPress={() => alert('Booking Table...')}
+              className="flex-1 bg-primary h-16 rounded-[24px] flex-row items-center justify-center shadow-lg shadow-primary/30"
+              activeOpacity={0.8}
             >
               <CalendarCheck size={20} color="white" />
-              <Text className="ml-2 text-white font-bold text-base">Book Table</Text>
+              <Text className="ml-2 text-white font-black text-lg">Book Table</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              className="w-14 h-14 bg-slate-100 rounded-2xl items-center justify-center border border-slate-200"
-              onPress={() => alert('Calling Restaurant...')}
+              className="w-16 h-16 bg-muted/30 rounded-[24px] items-center justify-center border border-border/50"
+              activeOpacity={0.7}
             >
-              <Phone size={20} color="#1e293b" />
+              <Phone size={22} className="text-foreground" />
             </TouchableOpacity>
           </View>
 
-          {/* 3. Description Section */}
-          <View className="border-t border-slate-100 pt-6">
-            <View className="flex-row items-center mb-3">
-              <Info size={18} color="#1e293b" />
-              <Text className="text-lg font-bold text-slate-900 ml-2">Description</Text>
+          {/* Information Section */}
+          <View className="border-t border-border/30 pt-8 mb-6">
+            <View className="flex-row items-center mb-4">
+              <View className="p-2 bg-primary/10 rounded-lg">
+                <Info size={18} className="text-primary" />
+              </View>
+              <Text className="text-xl font-black text-foreground ml-3">Description</Text>
             </View>
-            <Text className="text-slate-600 leading-6 text-sm italic">
-              "{hotel.description || 'No description available for this venue.'}"
+            <Text className="text-muted-foreground leading-7 text-[15px] font-medium italic">
+              "{hotel.description}"
             </Text>
           </View>
 
           <HotelMenu />
 
+          {/* Spacer for Bottom Tabs */}
+          <View className="h-20" />
         </View>
       </ScrollView>
     </View>
