@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "project-lookdine-app",
-    "slug": "project-lookdine-app",
+    "name": "LookDine",
+    "slug": "lookdine",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
