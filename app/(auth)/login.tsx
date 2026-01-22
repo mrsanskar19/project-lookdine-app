@@ -3,15 +3,32 @@ import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform
 import { useRouter } from 'expo-router';
 import { Mail, Lock, ArrowRight, ChefHat } from 'lucide-react-native';
 import { cn } from '@/lib/utils';
+import { InputField } from '@/components/common/Input';
+import { useAuth } from '@/lib/contexts/UserContext';
+import ErrorView from '@/components/common/ErrorView';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+const { login,isLoading,error,setError } = useAuth();
 
-  const handleLogin = () => {
-    // Navigate to main app after successful auth
-    router.replace('/(main)/(tabs)/home');
+  const handleLogin = async () => {
+      // 1. Basic Validation
+      if (!identifier || !password) {
+        setError("Please enter all details");
+        return;
+      }
+    
+      // 2. Determine if Input is Email or Username
+      const isEmail = identifier.includes('@');
+      
+      const credentials = {
+        [isEmail ? 'email' : 'username']: identifier,
+        password: password
+      };
+    
+      await login(credentials);
   };
 
   return (
@@ -38,29 +55,23 @@ export default function LoginPage() {
           {/* Form Fields */}
           <View className="space-y-4">
             <View className="relative">
-              <View className="absolute left-4 top-4 z-10">
-                <Mail size={20} color="#94a3b8" />
-              </View>
-              <TextInput
+              <InputField
                 placeholder="Email Address"
-                value={email}
-                onChangeText={setEmail}
-                className="w-full h-14 bg-slate-50 border border-border rounded-2xl pl-12 pr-4 text-foreground text-base focus:border-primary"
+                label="Email/Username"
+                value={identifier}
+                onChangeText={setIdentifier}
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
             </View>
 
             <View className="relative mt-4">
-              <View className="absolute left-4 top-4 z-10">
-                <Lock size={20} color="#94a3b8" />
-              </View>
-              <TextInput
+              <InputField
+              label="Password"
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
-                className="w-full h-14 bg-slate-50 border border-border rounded-2xl pl-12 pr-4 text-foreground text-base focus:border-primary"
               />
             </View>
 
@@ -68,26 +79,26 @@ export default function LoginPage() {
               <Text className="text-primary font-medium">Forgot Password?</Text>
             </TouchableOpacity>
 
+            <ErrorView show={!!error} title={error} type="toast" />
             {/* Login Button */}
             <TouchableOpacity 
               onPress={handleLogin}
               activeOpacity={0.8}
               className="w-full h-16 bg-primary rounded-2xl flex-row items-center justify-center mt-4 shadow-lg shadow-primary/30"
             >
-              <Text className="text-white font-bold text-lg mr-2">Sign In</Text>
-              <ArrowRight size={20} color="white" />
+              <Text className="text-white font-bold text-lg mr-2">{isLoading ? "Loading..." : "Sign In "}</Text>
             </TouchableOpacity>
           </View>
 
           {/* Social Login Separator */}
-          <View className="flex-row items-center my-10">
+          {/* <View className="flex-row items-center my-10">
             <View className="flex-1 h-[1px] bg-border" />
             <Text className="px-4 text-slate-400 text-sm">OR CONTINUE WITH</Text>
             <View className="flex-1 h-[1px] bg-border" />
-          </View>
+          </View> */}
 
           {/* Bottom Link */}
-          <View className="flex-row justify-center mt-auto">
+          <View className="flex-row justify-center mt-10">
             <Text className="text-slate-500 text-base">New to Social Dine? </Text>
             <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
               <Text className="text-primary font-bold text-base">Join Now</Text>

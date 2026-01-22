@@ -7,9 +7,11 @@ import {
   ArrowLeft
 } from 'lucide-react-native';
 import ThemeToggle from '@/components/ThemeToggle';
+import { useAuth } from '@/lib/contexts/UserContext';
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const { logout } = useAuth()
   const [isPrivate, setIsPrivate] = useState(true);
 
   return (
@@ -24,7 +26,7 @@ export default function SettingsScreen() {
           <SettingsItem 
             icon={User} 
             label="Edit Profile" 
-            // onPress={() => router.push('/profile/edit')} 
+            onPress={() => router.push('/(settings)/edit-profile')} 
           />
           <SettingsItem 
             icon={Bell} 
@@ -48,12 +50,7 @@ export default function SettingsScreen() {
             onValueChange={setIsDarkMode} 
           /> */}
           <ThemeToggle/>
-          <SettingsToggle 
-            icon={Eye} 
-            label="Private Account" 
-            value={isPrivate} 
-            onValueChange={setIsPrivate} 
-          />
+         
           <SettingsItem 
             icon={Languages} 
             label="Language" 
@@ -72,7 +69,7 @@ export default function SettingsScreen() {
         <View className="px-6 mt-10 mb-20">
           <TouchableOpacity 
             className="flex-row items-center justify-center bg-red-50 py-4 rounded-2xl border border-red-100"
-            onPress={() => router.replace('/login')}
+            onPress={() => logout()}
           >
             <LogOut size={20} color="#ef4444" />
             <Text className="ml-2 text-red-500 font-black">LOG OUT</Text>

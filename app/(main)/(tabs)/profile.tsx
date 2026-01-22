@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MessageCircle, UserPlus, MapPin, Briefcase, ChevronLeft, ShieldCheck, Zap, ArrowLeft, Share2, Edit3, Users, Settings } from 'lucide-react-native';
+import { useAuth } from '@/lib/contexts/UserContext';
 
 export default function PrivateProfile() {
   const router = useRouter();
+  const { user } = useAuth()
 
   // --- ACTIONS ---
   const handleEditProfile = () => {
     // Logic to open edit modal or navigate to edit screen
-    // router.push('/settings/edit-profile');
+    router.push('/(settings)/edit-profile');
   };
 
   const showConnections = (type: 'Followers' | 'Connections') => {
@@ -66,8 +68,8 @@ export default function PrivateProfile() {
 
           {/* --- USER INFO --- */}
           <View className="mt-6">
-            <Text className="text-3xl font-black text-foreground">Chef Marco, 28</Text>
-            <Text className="text-primary font-bold text-lg mb-4">@marcocooks_</Text>
+            <Text className="text-3xl font-black text-foreground">{user?.name}, 28</Text>
+            <Text className="text-primary font-bold text-lg mb-4">@{user?.username}</Text>
             <Text className="text-muted-foreground leading-6 text-[15px]">
               Executive Chef at The Grand Bistro. Passionate about fusion Italian-Indian cuisine and underground dining experiences.
             </Text>
@@ -76,7 +78,7 @@ export default function PrivateProfile() {
           {/* --- CLICKABLE STATS --- */}
           <View className="flex-row mt-8 py-6 border-y border-border/50">
             <TouchableOpacity 
-              onPress={() => showConnections('Followers')}
+              onPress={() => router.push('/(main)/connections')}
               className="flex-1 items-center"
             >
               <Text className="text-2xl font-black text-foreground">4.2k</Text>

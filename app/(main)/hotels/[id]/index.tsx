@@ -63,6 +63,7 @@ export default function HotelDetailScreen() {
             <TouchableOpacity
               className="flex-1 bg-primary h-16 rounded-[24px] flex-row items-center justify-center shadow-lg shadow-primary/30"
               activeOpacity={0.8}
+              onPress={()=>router.push("/(main)/hotels/1/booking")}
             >
               <CalendarCheck size={20} color="white" />
               <Text className="ml-2 text-white font-black text-lg">Book Table</Text>

@@ -153,7 +153,7 @@ export default function HomeScreen() {
         <View className="px-6 pb-20">
           <View className="flex-row justify-between items-end mb-4">
             <Text className="text-2xl font-bold text-foreground">Nearby Places</Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>router.replace("/(main)/hotels")}>
               <Text className="text-primary font-bold">See All</Text>
             </TouchableOpacity>
           </View>

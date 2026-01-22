@@ -75,7 +75,7 @@ export default function ChatRoom() {
         </View>
         <View className="flex-row items-center space-x-2">
           <TouchableOpacity className="p-2 bg-muted/50 rounded-full"><Phone size={18} className="text-foreground" /></TouchableOpacity>
-          <TouchableOpacity className="p-2 bg-muted/50 rounded-full"><MoreVertical size={18} className="text-foreground" /></TouchableOpacity>
+          <TouchableOpacity onPress={()=>router.push("/(main)/chat/1/settings")} className="p-2 bg-muted/50 rounded-full"><MoreVertical size={18} className="text-foreground" /></TouchableOpacity>
         </View>
       </View>
 

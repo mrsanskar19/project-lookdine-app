@@ -4,8 +4,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import "./global.css";
 import { ThemeProvider, useAppTheme } from '@/lib/contexts/theme-context';
 import { View } from 'react-native';
+import { AuthProvider } from '@/lib/contexts/UserContext';
+import { StatusBar } from 'expo-status-bar';
+import CustomSplash from '@/components/common/CustomSplash';
 
-// Prevent auto-hide so we control the transition
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -13,15 +15,7 @@ export default function RootLayout() {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    async function prepare() {
-      try {
-        // Wait for 2 seconds (Splash visibility)
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      } finally {
         setAppIsReady(true);
-      }
-    }
-    prepare();
   }, []);
 
   // Use a second effect to handle navigation AFTER the component mounts
@@ -29,14 +23,20 @@ export default function RootLayout() {
     if (appIsReady) {
       SplashScreen.hideAsync();
       // Only redirect once the Stack is definitely in the DOM
-      // router.replace('/(auth)/login');
+      router.replace('/(auth)/login');
     }
   }, [appIsReady]);
 
   // IMPORTANT: Do NOT return null. Return the Stack so it can initialize.
   return (
     <ThemeProvider>
-      <RootLayoutContent />
+        <AuthProvider>
+        {!appIsReady ? (
+            <CustomSplash />
+          ) : (
+            <RootLayoutContent />
+          )}
+        </AuthProvider>
     </ThemeProvider>
   );
 }
@@ -48,6 +48,7 @@ function RootLayoutContent() {
   return (
     // This View applies the 'dark' class to the entire app tree
     <View className={`flex-1 ${activeTheme === 'dark' ? 'dark' : ''} ${isUnder18 ? 'under18' : ''}`}>
+      <StatusBar style={activeTheme === 'dark' ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(main)/(tabs)" />

@@ -112,13 +112,12 @@ export default function NearbyScreen() {
   );
 }
 
-// --- SUB-COMPONENTS ---
 
 function TabButton({ active, onPress, label, Icon }: any) {
   return (
     <TouchableOpacity 
       onPress={onPress}
-      className={`flex-row items-center px-4 py-2 rounded-xl ${active ? 'bg-white shadow-sm' : ''}`}
+      className={`flex-row items-center px-4 py-2 rounded-xl ${active ? 'bg-white/30 shadow-sm' : ''}`}
     >
       <Icon size={16} color={active ? '#F97316' : '#94a3b8'} />
       <Text className={`ml-2 font-bold text-xs ${active ? 'text-foreground' : 'text-muted-foreground'}`}>

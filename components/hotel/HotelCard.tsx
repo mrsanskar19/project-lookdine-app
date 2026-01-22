@@ -19,7 +19,7 @@ export default function HotelCard({ item }: { item: any }) {
       </View>
 
       {/* 2. CONTENT AREA */}
-      <View className="p-5">
+      <View className="p-5 bg-card">
         <View className="flex-row justify-between items-start">
           <View className="flex-1">
             <Text className="text-xl font-black text-foreground tracking-tight" numberOfLines={1}>

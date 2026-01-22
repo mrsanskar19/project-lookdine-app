@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ChefHat, Search, Calendar, CreditCard, Star, ArrowRight } from 'lucide-react-native';
+import { useAuth } from '@/lib/contexts/UserContext';
 
 const STEPS = [
   { id: 1, title: "Welcome", desc: "Discover hidden gems.", icon: ChefHat, img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500" },
@@ -14,6 +15,7 @@ const STEPS = [
 export default function Onboarding() {
   const [index, setIndex] = useState(0);
   const router = useRouter();
+  const { closeIntro } = useAuth()
   const isLast = index === STEPS.length - 1;
 
   return (
@@ -71,14 +73,14 @@ export default function Onboarding() {
             /* Step 5: Final CTA Block */
             <View className="space-y-4">
               <TouchableOpacity 
-                onPress={() => router.push('/(auth)/register')}
+                onPress={() =>{closeIntro(); router.push('/(auth)/register')}}
                 className="bg-primary w-full py-6 rounded-2xl items-center shadow-xl shadow-primary/40"
               >
                 <Text className="text-white font-black text-xl">Create Account</Text>
               </TouchableOpacity>
               
               <TouchableOpacity 
-                onPress={() => router.push('/(auth)/login')}
+                onPress={() =>{closeIntro(); router.push('/(auth)/login')}}
                 className="w-full py-5 items-center border-2 border-border rounded-2xl"
               >
                 <Text className="text-foreground font-bold text-lg">Sign In</Text>

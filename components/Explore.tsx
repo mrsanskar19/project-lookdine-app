@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Star, MapPin, UserPlus, ShieldCheck } from 'lucide-react-native';
 import UserCard from './common/UserCard';
+import { router } from 'expo-router';
 
 export default function ExploreView({ items }: { items: any[] }) {
   // Filter data for sections
@@ -17,7 +18,7 @@ export default function ExploreView({ items }: { items: any[] }) {
       
       {/* --- SECTION 1: FEATURED HOTELS (Horizontal) --- */}
       <View className="mt-6">
-        <SectionHeader title="Top Rated Hotels" />
+        <SectionHeader title="Top Rated Hotels" route="hotels" />
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="pl-6">
           {hotels.map((hotel) => (
             <HotelCard key={hotel.id} data={hotel} />
@@ -27,7 +28,7 @@ export default function ExploreView({ items }: { items: any[] }) {
 
       {/* --- SECTION 2: POPULAR USERS & CHEFS (Horizontal) --- */}
       <View className="mt-10">
-        <SectionHeader title="Global Community" />
+        <SectionHeader title="Global Community" route="user" />
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="pl-6">
           {chefs.map((user) => (
             <UserCard key={user.id} data={user} />
@@ -42,11 +43,11 @@ export default function ExploreView({ items }: { items: any[] }) {
 
 // --- SUB-COMPONENTS ---
 
-function SectionHeader({ title }: { title: string }) {
+function SectionHeader({ title,route }: { title: string,route:string }) {
   return (
     <View className="flex-row justify-between items-center px-6 mb-4">
       <Text className="text-lg font-black text-foreground tracking-tight">{title}</Text>
-      <TouchableOpacity><Text className="text-primary font-bold text-xs">View All</Text></TouchableOpacity>
+      <TouchableOpacity onPress={()=>router.replace(`/(main)/${route === "user" ? "user" :"hotels"}`)}><Text className="text-primary font-bold text-xs">View All</Text></TouchableOpacity>
     </View>
   );
 }

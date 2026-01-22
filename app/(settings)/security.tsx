@@ -29,12 +29,12 @@ export default function SecuritySettings() {
             icon={Mail} 
             label="Email Address" 
             value="mar**@gmail.com"
-            // onPress={() => router.push('/security/change-email')} 
+            onPress={() => router.push('/(settings)/change-email')} 
           />
           <SecurityItem 
             icon={Lock} 
             label="Change Password" 
-            // onPress={() => router.push('/(settings)/notification')} 
+            onPress={() => router.push('/(settings)/change-password')} 
           />
         </SecurityGroup>
 
